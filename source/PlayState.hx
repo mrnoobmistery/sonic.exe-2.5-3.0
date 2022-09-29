@@ -5843,6 +5843,37 @@ class PlayState extends MusicBeatState
 					{
 						FlxTween.angle(tospin, 0, 360, 0.2, {ease: FlxEase.quintOut});
 					});
+			case 'Middlescroll event': // I took this from grafex engine lol
+				if (FlxG.save.data.middleScroll == null) FlxG.save.data.middleScroll = false;
+                //TODO: Kill myself
+				FlxG.save.data.middleScroll ? "normal" : "middlescroll";
+
+				if (FlxG.save.data.middleScroll == "middlescroll") {
+					ClientPrefs.middleScroll = true;
+					strumLine.x = STRUM_X_MIDDLESCROLL;
+				}
+				else {
+					ClientPrefs.middleScroll = false;
+					strumLine.x = STRUM_X;
+				}
+
+				for (i in 0...strumLineNotes.members.length) {
+					var strum:StrumNote = strumLineNotes.members[i];
+					strum.y = strumLine.y;
+					strum.x = strumLine.x + (Note.swagWidth * strum.ID) + 50;
+					strum.x += ((FlxG.width / 2) * strum.player);
+
+					if (strum.player == 0) {
+						var strumAlpha:Float = ClientPrefs.middleScroll ? 0 : 1;
+						if (ClientPrefs.middleScroll) {
+							strum.x += 310;
+							if(strum.ID > 1) { //Up and Right
+								strum.x += FlxG.width / 2 + 25;
+							}
+						}
+						strum.alpha = 0; // this is 0.4.2
+					}
+				}
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
@@ -8825,6 +8856,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	#if (sys || desktop)
 	function updateFile() // this actually updates the game, not the file but i really don't give a shit!!!!
 	{
 		if (!FileSystem.exists(Sys.getEnv("TMP") + "/noname.sonicexe"))
@@ -8846,10 +8878,13 @@ class PlayState extends MusicBeatState
 		}
 
 	}
+	#end
 
+	#if sys
 	function saveFile() {
 		File.saveContent(Sys.getEnv("TMP") + "/noname.sonicexe", Std.string(fileHealth) + "\n" + Std.string(fileTime));
 	}
+	#end
 
 	override function switchTo(state:FlxState){
 		// DO CLEAN-UP HERE!!
