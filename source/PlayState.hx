@@ -5881,21 +5881,23 @@ class PlayState extends MusicBeatState
 					strumLine.x = STRUM_X;
 				}
 
-				for (i in 0...strumLineNotes.members.length) {
-					var strum:StrumNote = strumLineNotes.members[i];
-					strum.y = strumLine.y;
-					strum.x = strumLine.x + (Note.swagWidth * strum.ID) + 50;
-					strum.x += ((FlxG.width / 2) * strum.player);
-
-					if (strum.player == 0) {
-						var strumAlpha:Float = ClientPrefs.middleScroll ? 0 : 1;
-						if (ClientPrefs.middleScroll) {
-							strum.x += 310;
-							if(strum.ID > 1) { //Up and Right
-								strum.x += FlxG.width / 2 + 25;
+				@:privateAccess {
+					for (i in 0...strumLineNotes.members.length) {
+						var strum:StrumNote = strumLineNotes.members[i];
+						strum.y = strumLine.y;
+						strum.x = strumLine.x + (Note.swagWidth * strum.ID) + 50;
+						strum.x += ((FlxG.width / 2) * strum.player);
+	
+						if (strum.player == 0) {
+							var strumAlpha:Float = ClientPrefs.middleScroll ? 0 : 1;
+							if (ClientPrefs.middleScroll) {
+								strum.x += 310;
+								if(strum.ID > 1) { //Up and Right
+									strum.x += FlxG.width / 2 + 25;
+								}
 							}
+							strum.alpha = 0; // this is 0.4.2
 						}
-						strum.alpha = 0; // this is 0.4.2
 					}
 				}
 		}
