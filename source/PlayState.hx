@@ -63,13 +63,12 @@ import openfl.display.StageQuality;
 import openfl.events.KeyboardEvent;
 import openfl.filters.ShaderFilter;
 import openfl.utils.Assets as OpenFlAssets;
-import sys.FileSystem;
-import sys.io.File;
 import lime.app.Application;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.tweens.FlxTween.FlxTweenManager;
 import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.system.scaleModes.BaseScaleMode;
+import flash.system.System;
 using StringTools;
 
 #if desktop
@@ -77,6 +76,7 @@ import Discord.DiscordClient;
 #end
 #if sys
 import sys.FileSystem;
+import sys.io.File;
 #end
 
 typedef BasicSpeedChange = {
@@ -3247,6 +3247,7 @@ class PlayState extends MusicBeatState
 				var texti:String;
 				var size:String;
 
+				#if sys
 				if (FileSystem.exists(Paths.json(curSong.toLowerCase() + "/credits")))
 				{
 					texti = File.getContent((Paths.json(curSong.toLowerCase() + "/credits"))).split("TIME")[0];
@@ -3257,6 +3258,18 @@ class PlayState extends MusicBeatState
 					texti = "CREDITS\nunfinished";
 					size = '28';
 				}
+				#else
+				if (OpenFlAssets.exists(Paths.json(curSong.toLowerCase() + "/credits")))
+				{
+					texti = OpenFlAssets.getText((Paths.json(curSong.toLowerCase() + "/credits"))).split("TIME")[0];
+					size = OpenFlAssets.getText((Paths.json(curSong.toLowerCase() + "/credits"))).split("SIZE")[1];
+				}
+				else
+				{
+					texti = "CREDITS\nunfinished";
+					size = '28';
+				}
+				#end				
 
 				creditoText = new FlxText(0, -1000, 0, texti, 28);
 				creditoText.cameras = [camHUD];
@@ -3276,6 +3289,7 @@ class PlayState extends MusicBeatState
 			default:
 				var timei:String;
 
+				#if sys
 				if (FileSystem.exists(Paths.json(curSong.toLowerCase() + "/credits")))
 				{
 					timei = File.getContent((Paths.json(curSong.toLowerCase() + "/credits"))).split("TIME")[1];
@@ -3284,6 +3298,16 @@ class PlayState extends MusicBeatState
 				{
 					timei = "2.35";
 				}
+				#else
+				if (OpenFlAssets.exists(Paths.json(curSong.toLowerCase() + "/credits")))
+				{
+					timei =  OpenFlAssets.getText((Paths.json(curSong.toLowerCase() + "/credits"))).split("TIME")[1];
+				}
+				else
+				{
+					timei = "2.35";
+				}
+				#end
 
 				FlxG.log.add('BTW THE TIME IS ' + Std.parseFloat(timei));
 

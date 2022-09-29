@@ -19,6 +19,7 @@ import flixel.FlxCamera;
 import flixel.addons.display.FlxBackdrop;
 import openfl.filters.ShaderFilter;
 import flixel.util.FlxTimer;
+import flash.system.System;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -280,7 +281,7 @@ class PauseSubState extends MusicBeatSubstate
 					case 7:
 						FlxG.sound.play(Paths.sound("switch"));
 				}
-				Sys.exit(0);
+				System.exit(0);
 			}
 		#end
 
