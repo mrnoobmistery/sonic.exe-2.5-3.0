@@ -74,7 +74,6 @@
 
 
 	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path="art/FatalError.exe" rename='assets/exe/FatalError.exe' if="windows" />
 
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY
