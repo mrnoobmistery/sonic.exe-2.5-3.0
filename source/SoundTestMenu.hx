@@ -17,8 +17,7 @@ import lime.utils.Assets;
 import flixel.FlxCamera;
 import openfl.filters.ShaderFilter;
 
-
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 
