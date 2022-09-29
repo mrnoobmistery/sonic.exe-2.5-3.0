@@ -134,32 +134,16 @@ class TitleState extends MusicBeatState
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
-		#if FREEPLAY
-		FlxTransitionableState.skipNextTransOut=true;
-		FlxTransitionableState.skipNextTransIn=true;
-		MusicBeatState.switchState(new FreeplayState());
-		#elseif CHARTING
-		FlxTransitionableState.skipNextTransOut=true;
-		FlxTransitionableState.skipNextTransIn=true;
-		MusicBeatState.switchState(new ChartingState());
-		#elseif MENU
-		FlxTransitionableState.skipNextTransOut=true;
-		FlxTransitionableState.skipNextTransIn=true;
-		MusicBeatState.switchState(new EncoreState());
-		#else
-
-			#if desktop
-			DiscordClient.initialize();
-			Application.current.onExit.add (function (exitCode) {
-				DiscordClient.shutdown();
-			});
-			#end
-			new FlxTimer().start(0.1, function(tmr:FlxTimer)
-				{
-					startIntro();
-				});
-
+		#if desktop
+		DiscordClient.initialize();
+		Application.current.onExit.add (function (exitCode) {
+			DiscordClient.shutdown();
+		});
 		#end
+		new FlxTimer().start(0.1, function(tmr:FlxTimer)
+		{
+			startIntro();
+		});
 	}
 
 	var logoBl:FlxSprite;

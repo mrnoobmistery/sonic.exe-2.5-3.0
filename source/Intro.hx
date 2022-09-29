@@ -42,29 +42,33 @@ class Intro extends MusicBeatState
       div.loadGraphic(Paths.image("cameostuff/divide"));
       div.alpha = 0;
       add(div);
-		FlxG.mouse.visible = false;
+		  FlxG.mouse.visible = false;
 			FlxG.sound.volume = 10;
 
       FlxG.sound.muteKeys = [];
   		FlxG.sound.volumeDownKeys = [];
   		FlxG.sound.volumeUpKeys = [];
+      #if VIDEOS_ALLOWED
         var video = new MP4Handler();
         video.canSkip=false;
-		video.finishCallback = function()
-		{
-      FlxG.sound.muteKeys = TitleState.muteKeys;
-      FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-      FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;    
-      FlxTween.tween(div, {alpha: 1}, 3.4, {ease: FlxEase.quadInOut,
-        onComplete: function(twn:FlxTween)
-          {
-            FlxTween.tween(div, {alpha: 0}, 3.4, {ease: FlxEase.quadInOut, 
-              onComplete: function(twn:FlxTween){
-                MusicBeatState.switchState(new TitleState());
-              }});
-          }
-        });
-		}
-		video.playVideo(Paths.video('HaxeFlixelIntro'));
+        video.finishCallback = function()
+        {
+          FlxG.sound.muteKeys = TitleState.muteKeys;
+          FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
+          FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;    
+          FlxTween.tween(div, {alpha: 1}, 3.4, {ease: FlxEase.quadInOut,
+            onComplete: function(twn:FlxTween)
+              {
+                FlxTween.tween(div, {alpha: 0}, 3.4, {ease: FlxEase.quadInOut, 
+                  onComplete: function(twn:FlxTween){
+                    MusicBeatState.switchState(new TitleState());
+                  }});
+              }
+            });
+        }
+        video.playVideo(Paths.video('HaxeFlixelIntro'));
+    #else
+    MusicBeatState.switchState(new TitleState());
+    #end
     }
 }
