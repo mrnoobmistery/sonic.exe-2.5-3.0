@@ -186,7 +186,6 @@ jobs:
           haxelib install flixel-ui 
           haxelib install flixel-addons
           haxelib install hscript
-          haxelib git polymod https://github.com/MasterEric/polymod.git
           haxelib git linc_luajit https://github.com/MemeHoovy/Linc_luajit-android.git
           haxelib git AndroidTools https://github.com/MAJigsaw77/extension-androidtools.git
           haxelib list
@@ -227,7 +226,6 @@ jobs:
           haxelib install newgrounds
           haxelib install openfl
           haxelib install hxCodec
-          haxelib git polymod https://github.com/larsiusprime/polymod.git
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
           haxelib install linc_luajit
