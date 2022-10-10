@@ -12,6 +12,11 @@
 		<lib name='${CPP_DIR}/lib/libvlc.so.5' if='linux'/>
 		<lib name='${CPP_DIR}/lib/libvlccore.so.9' if='linux'/>
 	</target>
+
+	<target id='haxe' tool='linker' if='mac'>
+		<lib name='${CPP_DIR}/lib/Mac/libvlc.5.dylib'/>
+		<lib name='${CPP_DIR}/lib/Mac/libvlccore.7.dylib'/>
+	</target>
 	
 	<target id='haxe' tool='linker' toolid='exe'>
 		<lib name='${CPP_DIR}/lib/libvlc.lib' if='windows'/>

@@ -9,7 +9,8 @@ class MP4Sprite extends FlxSprite
 {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
-	public var video:MP4Handler;
+
+	var video:MP4Handler;
 
 	public function new(x:Float = 0, y:Float = 0, width:Float = 320, height:Float = 240, autoScale:Bool = true)
 	{
@@ -28,10 +29,10 @@ class MP4Sprite extends FlxSprite
 
 		video.finishCallback = function()
 		{
-			kill();
 			if (finishCallback != null)
 				finishCallback();
 
+			kill();
 		};
 	}
 

@@ -11,7 +11,6 @@ class MP4Handler extends vlc.VlcBitmap
 {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
-	public var canSkip:Bool = true;
 
 	var pauseMusic:Bool;
 
@@ -39,10 +38,7 @@ class MP4Handler extends vlc.VlcBitmap
 
 	function update(e:Event)
 	{
-		if ((FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) && isPlaying
-		#if !debug
-		&& canSkip
-		#end)
+		if ((FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) && isPlaying)
 			finishVideo();
 
 		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
