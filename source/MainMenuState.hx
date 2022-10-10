@@ -288,9 +288,11 @@ class MainMenuState extends MusicBeatState
 									case 'encore':
 										MusicBeatState.switchState(new EncoreState());
 									case 'sound_test':										
-										MusicBeatState.switchState(new SoundTestMenu());									
+										MusicBeatState.switchState(new SoundTestMenu());
 									case 'options':
 										MusicBeatState.switchState(new OptionsState());
+									case 'extras':
+										MusicBeatState.switchState(new ExtrasState());
 								}
 							});
 						}
