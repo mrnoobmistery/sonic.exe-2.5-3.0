@@ -47,7 +47,7 @@ class StoryMenuState extends MusicBeatState
 
 	var difficultySelectors:FlxGroup;
 	var sprDifficultyGroup:FlxTypedGroup<FlxSprite>;
-	//EXE Menu
+	// EXE Menu
 	var ezbg:FlxSprite;
 
 	var sprDifficulty:FlxSprite;
@@ -74,14 +74,14 @@ class StoryMenuState extends MusicBeatState
 	var staticscreen:FlxSprite;
 	var portrait:FlxSprite;
 
-
 	override function create()
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
 		WeekData.reloadWeekFiles(true);
-		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
+		if (curWeek >= WeekData.weeksList.length)
+			curWeek = 0;
 		persistentUpdate = persistentDraw = true;
 
 		switch (FlxG.save.data.storyProgress)
@@ -92,7 +92,7 @@ class StoryMenuState extends MusicBeatState
 				songArray = ['too slow', 'you cant run', 'triple trouble'];
 		}
 
-		//FlxG.sound.playMusic(Paths.music('storymodemenumusic'));
+		// FlxG.sound.playMusic(Paths.music('storymodemenumusic'));
 
 		var bg:FlxSprite;
 
@@ -320,27 +320,24 @@ class StoryMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
 				if (curdiff == 4)
+				{
+					PlayState.SONG = Song.loadFromJson('too-slow-encore', 'too-slow-encore');
+
+					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
-
-						PlayState.SONG = Song.loadFromJson('too-slow-encore', 'too-slow-encore');
-
-						new FlxTimer().start(1, function(tmr:FlxTimer)
-							{
-								// LoadingState.loadAndSwitchState(new PlayState(), true); //save this code for the cutsceneless build of the game
-								//var video:MP4Handler = new MP4Handler();
-							//	video.playVideo(Paths.video('tooslowcutscene1'));
-							//	video.finishCallback = function()
-								//{
-									LoadingState.loadAndSwitchState(new PlayState());
-								//}
-							});
-					}
-
+						// LoadingState.loadAndSwitchState(new PlayState(), true); //save this code for the cutsceneless build of the game
+						// var video:MP4Handler = new MP4Handler();
+						//	video.playVideo(Paths.video('tooslowcutscene1'));
+						//	video.finishCallback = function()
+						// {
+						LoadingState.loadAndSwitchState(new PlayState());
+						// }
+					});
+				}
 				else if (FlxG.save.data.storyProgress == 0)
 				{
 					PlayState.storyPlaylist = ['too slow', 'you cant run', 'triple trouble'];
 					PlayState.isStoryMode = true;
-
 
 					curdiff = 3;
 					PlayState.storyDifficulty = curdiff;
@@ -351,8 +348,7 @@ class StoryMenuState extends MusicBeatState
 				}
 				else
 				{
-
-						curDifficulty = '-hard';
+					curDifficulty = '-hard';
 
 					PlayState.SONG = Song.loadFromJson(songArray[real].toLowerCase() + curDifficulty, songArray[real].toLowerCase());
 					PlayState.isStoryMode = false;
@@ -373,21 +369,23 @@ class StoryMenuState extends MusicBeatState
 				if (songArray[real] == 'too slow')
 				{
 					new FlxTimer().start(1, function(tmr:FlxTimer)
-						{
-							// LoadingState.loadAndSwitchState(new PlayState(), true); //save this code for the cutsceneless build of the game
-							//var video:MP4Handler = new MP4Handler();
+					{
+						// LoadingState.loadAndSwitchState(new PlayState(), true); //save this code for the cutsceneless build of the game
+						// var video:MP4Handler = new MP4Handler();
 						//	video.playVideo(Paths.video('tooslowcutscene1'));
 						//	video.finishCallback = function()
-							//{
-								LoadingState.loadAndSwitchState(new PlayState());
-							//}
-						});
+						// {
+						LoadingState.loadAndSwitchState(new PlayState());
+						// }
+					});
 				}
 			}
 
 			if (FlxG.save.data.flashing)
 			{
-				FlxFlicker.flicker(redBOX, 1, 0.06, false, false, function(flick:FlxFlicker) {});
+				FlxFlicker.flicker(redBOX, 1, 0.06, false, false, function(flick:FlxFlicker)
+				{
+				});
 			}
 		}
 

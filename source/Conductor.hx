@@ -6,7 +6,6 @@ import Song.SwagSong;
  * ...
  * @author
  */
-
 typedef BPMChangeEvent =
 {
 	var stepTime:Int;
@@ -42,14 +41,14 @@ class Conductor
 		var totalPos:Float = 0;
 		for (i in 0...song.notes.length)
 		{
-			if(song.notes[i].changeBPM && song.notes[i].bpm != curBPM)
+			if (song.notes[i].changeBPM && song.notes[i].bpm != curBPM)
 			{
 				curBPM = song.notes[i].bpm;
 				var event:BPMChangeEvent = {
 					stepTime: totalSteps,
 					songTime: totalPos,
 					bpm: curBPM,
-					stepCrochet: ((60 / curBPM) * 1000)/4
+					stepCrochet: ((60 / curBPM) * 1000) / 4
 				};
 				bpmChangeMap.push(event);
 			}
@@ -61,7 +60,8 @@ class Conductor
 		trace("new BPM map BUDDY " + bpmChangeMap);
 	}
 
-	public static function getBPMFromSeconds(time:Float){
+	public static function getBPMFromSeconds(time:Float)
+	{
 		var lastChange:BPMChangeEvent = {
 			stepTime: 0,
 			songTime: 0,
@@ -77,7 +77,8 @@ class Conductor
 		return lastChange;
 	}
 
-	public static function getBPMFromStep(step:Float){
+	public static function getBPMFromStep(step:Float)
+	{
 		var lastChange:BPMChangeEvent = {
 			stepTime: 0,
 			songTime: 0,
@@ -86,34 +87,39 @@ class Conductor
 		}
 		for (i in 0...Conductor.bpmChangeMap.length)
 		{
-			if (Conductor.bpmChangeMap[i].stepTime<=step)
+			if (Conductor.bpmChangeMap[i].stepTime <= step)
 				lastChange = Conductor.bpmChangeMap[i];
 		}
 
 		return lastChange;
 	}
 
-	public static function stepToSeconds(step:Float){
+	public static function stepToSeconds(step:Float)
+	{
 		var lastChange = getBPMFromStep(step);
 		return step * lastChange.stepCrochet; // TODO: make less shit and take BPM into account PROPERLY
 	}
 
-	public static function getCrotchetAtTime(time:Float){
+	public static function getCrotchetAtTime(time:Float)
+	{
 		var lastChange = getBPMFromSeconds(time);
-		return lastChange.stepCrochet*4;
+		return lastChange.stepCrochet * 4;
 	}
 
-	public static function beatToSeconds(beat:Float){
+	public static function beatToSeconds(beat:Float)
+	{
 		var step = beat * 4;
 		var lastChange = getBPMFromStep(step);
-		return lastChange.songTime + ((step - lastChange.stepTime) / (lastChange.bpm / 60)/4) * 1000;//step * (lastChange.stepCrochet*4); // TODO: make less shit and take BPM into account PROPERLY
+		return lastChange.songTime
+			+
+			((step - lastChange.stepTime) / (lastChange.bpm / 60) / 4) * 1000; // step * (lastChange.stepCrochet*4); // TODO: make less shit and take BPM into account PROPERLY
 	}
 
-	public static function getStep(time:Float){
+	public static function getStep(time:Float)
+	{
 		var lastChange = getBPMFromSeconds(time);
 		return lastChange.stepTime + (time - lastChange.songTime) / lastChange.stepCrochet;
 	}
-
 
 	public static function changeBPM(newBpm:Float)
 	{

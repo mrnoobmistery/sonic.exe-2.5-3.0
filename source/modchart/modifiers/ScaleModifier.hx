@@ -1,60 +1,68 @@
 package modchart.modifiers;
+
 import ui.*;
 import modchart.*;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
 import math.*;
 
-class ScaleModifier extends Modifier {
-  inline function lerp(a:Float,b:Float,c:Float){
-    return a+(b-a)*c;
-  }
-  function getScale(sprite:Dynamic, scale:FlxPoint, data:Int, player:Int){
-    var miniX = getPercent(player)+getSubmodPercent("miniX",player)+getSubmodPercent('mini${data}X',player);
-    var miniY = getPercent(player)+getSubmodPercent("miniY",player)+getSubmodPercent('mini${data}Y',player);
+class ScaleModifier extends Modifier
+{
+	inline function lerp(a:Float, b:Float, c:Float)
+	{
+		return a + (b - a) * c;
+	}
 
-    scale.x*=1-miniX;
-    scale.y*=1-miniY;
-    var angle = sprite.baseAngle;
+	function getScale(sprite:Dynamic, scale:FlxPoint, data:Int, player:Int)
+	{
+		var miniX = getPercent(player) + getSubmodPercent("miniX", player) + getSubmodPercent('mini${data}X', player);
+		var miniY = getPercent(player) + getSubmodPercent("miniY", player) + getSubmodPercent('mini${data}Y', player);
 
-    var stretch = getSubmodPercent("stretch",player);
-    var squish = getSubmodPercent("squish",player);
+		scale.x *= 1 - miniX;
+		scale.y *= 1 - miniY;
+		var angle = sprite.baseAngle;
 
-    var stretchX =lerp(1,0.5,stretch);
-    var stretchY =lerp(1,2,stretch);
+		var stretch = getSubmodPercent("stretch", player);
+		var squish = getSubmodPercent("squish", player);
 
-    var squishX =lerp(1,2,squish);
-    var squishY =lerp(1,0.5,squish);
+		var stretchX = lerp(1, 0.5, stretch);
+		var stretchY = lerp(1, 2, stretch);
 
-    scale.x*=(Math.sin(angle*Math.PI/180)*squishY)+(Math.cos(angle*Math.PI/180)*squishX);
-    scale.x*=(Math.sin(angle*Math.PI/180)*stretchY)+(Math.cos(angle*Math.PI/180)*stretchX);
+		var squishX = lerp(1, 2, squish);
+		var squishY = lerp(1, 0.5, squish);
 
-    scale.y*=(Math.cos(angle*Math.PI/180)*stretchY)+(Math.sin(angle*Math.PI/180)*stretchX);
-    scale.y*=(Math.cos(angle*Math.PI/180)*squishY)+(Math.sin(angle*Math.PI/180)*squishX);
+		scale.x *= (Math.sin(angle * Math.PI / 180) * squishY) + (Math.cos(angle * Math.PI / 180) * squishX);
+		scale.x *= (Math.sin(angle * Math.PI / 180) * stretchY) + (Math.cos(angle * Math.PI / 180) * stretchX);
 
-    return scale;
-  }
+		scale.y *= (Math.cos(angle * Math.PI / 180) * stretchY) + (Math.sin(angle * Math.PI / 180) * stretchX);
+		scale.y *= (Math.cos(angle * Math.PI / 180) * squishY) + (Math.sin(angle * Math.PI / 180) * squishX);
 
-  override function getReceptorScale(receptor:StrumNote, scale:FlxPoint, data:Int, player:Int){
-    return getScale(receptor,scale,data,player);
-  }
+		return scale;
+	}
 
-  override function getNoteScale(note:Note, scale:FlxPoint, data:Int, player:Int){
-    return getScale(note,scale,data,player);
-  }
+	override function getReceptorScale(receptor:StrumNote, scale:FlxPoint, data:Int, player:Int)
+	{
+		return getScale(receptor, scale, data, player);
+	}
 
+	override function getNoteScale(note:Note, scale:FlxPoint, data:Int, player:Int)
+	{
+		return getScale(note, scale, data, player);
+	}
 
-  override function getSubmods(){
-    var subMods:Array<String> = ["squish","stretch","miniX","miniY"];
+	override function getSubmods()
+	{
+		var subMods:Array<String> = ["squish", "stretch", "miniX", "miniY"];
 
-    var receptors = modMgr.receptors[0];
-    var kNum = receptors.length;
-    for(recep in receptors){
-      subMods.push('mini${recep.noteData}X');
-      subMods.push('mini${recep.noteData}Y');
-      subMods.push('squish${recep.noteData}');
-      subMods.push('stretch${recep.noteData}');
-    }
-    return subMods;
-  }
+		var receptors = modMgr.receptors[0];
+		var kNum = receptors.length;
+		for (recep in receptors)
+		{
+			subMods.push('mini${recep.noteData}X');
+			subMods.push('mini${recep.noteData}Y');
+			subMods.push('squish${recep.noteData}');
+			subMods.push('stretch${recep.noteData}');
+		}
+		return subMods;
+	}
 }

@@ -42,6 +42,7 @@ class Note extends FlxSprite
 	public var eventVal2:String = '';
 
 	public var inEditor:Bool = false;
+
 	private var earlyHitMult:Float = 0.5;
 
 	public static var swagWidth:Float = 160 * 0.7;
@@ -82,32 +83,41 @@ class Note extends FlxSprite
 
 	public var speed:Float = 1;
 	@:isVar
-	public var isSustainEnd( get, null):Bool = false;
+	public var isSustainEnd(get, null):Bool = false;
 
-	function get_isSustainEnd(){
-		return animation!=null && animation.curAnim!=null && animation.curAnim.name.endsWith("holdend");
+	function get_isSustainEnd()
+	{
+		return animation != null && animation.curAnim != null && animation.curAnim.name.endsWith("holdend");
 	}
 
-	private function set_texture(value:String):String {
-		if(texture != value) {
+	private function set_texture(value:String):String
+	{
+		if (texture != value)
+		{
 			reloadNote('', value);
 		}
 		texture = value;
 		return value;
 	}
 
-	private function set_noteType(value:String):String {
+	private function set_noteType(value:String):String
+	{
 		noteSplashTexture = PlayState.SONG.splashSkin;
 		hitbox = Conductor.safeZoneOffset;
-		if(noteData > -1 && noteType != value) {
-			switch(value) {
+		if (noteData > -1 && noteType != value)
+		{
+			switch (value)
+			{
 				case 'Hurt Note':
 					ignoreNote = mustPress;
 					reloadNote('HURT');
 					noteSplashTexture = 'HURTnoteSplashes';
-					if(isSustainNote) {
+					if (isSustainNote)
+					{
 						missHealth = 0.1;
-					} else {
+					}
+					else
+					{
 						missHealth = 0.3;
 					}
 					hitCausesMiss = true;
@@ -117,12 +127,12 @@ class Note extends FlxSprite
 				case 'Static Note':
 					reloadNote('STATIC');
 				case 'Hex Note':
-					missHealth=0;
+					missHealth = 0;
 					reloadNote("HEX");
-					hitbox*=0.55;
-					ignoreNote=true;
-					hitCausesMiss=true;
-					noteSplashDisabled=true;
+					hitbox *= 0.55;
+					ignoreNote = true;
+					hitCausesMiss = true;
+					noteSplashDisabled = true;
 				case 'Majin Note':
 					reloadNote('MAJIN');
 					noteSplashTexture = 'endlessNoteSplashes';
@@ -160,17 +170,21 @@ class Note extends FlxSprite
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime;
-		if(!inEditor) this.strumTime += ClientPrefs.noteOffset;
+		if (!inEditor)
+			this.strumTime += ClientPrefs.noteOffset;
 
 		this.noteData = noteData;
 
-		if(noteData > -1) {
+		if (noteData > -1)
+		{
 			x += swagWidth * (noteData % 4);
 			texture = '';
 
-			if (PlayState.SONG.isRing){
-				if(!isSustainNote) { //Doing this 'if' check to fix the warnings on Senpai songs
-				var animToPlay:String = '';
+			if (PlayState.SONG.isRing)
+			{
+				if (!isSustainNote)
+				{ // Doing this 'if' check to fix the warnings on Senpai songs
+					var animToPlay:String = '';
 
 					switch (noteData % 5)
 					{
@@ -186,28 +200,28 @@ class Note extends FlxSprite
 							animToPlay = 'red';
 					}
 
-				animation.play(animToPlay + 'Scroll');
-
-			}
-			}
-			else{
-
-			x += swagWidth * (noteData % 4);
-			if(!isSustainNote) { //Doing this 'if' check to fix the warnings on Senpai songs
-				var animToPlay:String = '';
-				switch (noteData % 4)
-				{
-					case 0:
-						animToPlay = 'purple';
-					case 1:
-						animToPlay = 'blue';
-					case 2:
-						animToPlay = 'green';
-					case 3:
-						animToPlay = 'red';
+					animation.play(animToPlay + 'Scroll');
 				}
-				animation.play(animToPlay + 'Scroll');
 			}
+			else
+			{
+				x += swagWidth * (noteData % 4);
+				if (!isSustainNote)
+				{ // Doing this 'if' check to fix the warnings on Senpai songs
+					var animToPlay:String = '';
+					switch (noteData % 4)
+					{
+						case 0:
+							animToPlay = 'purple';
+						case 1:
+							animToPlay = 'blue';
+						case 2:
+							animToPlay = 'green';
+						case 3:
+							animToPlay = 'red';
+					}
+					animation.play(animToPlay + 'Scroll');
+				}
 			}
 		}
 
@@ -216,13 +230,14 @@ class Note extends FlxSprite
 		if (isSustainNote && prevNote != null)
 		{
 			baseAlpha = 0.6;
-			if(ClientPrefs.downScroll) flipY = true;
+			if (ClientPrefs.downScroll)
+				flipY = true;
 
 			offsetX += width / 2;
 			copyAngle = false;
 
-
-			if(PlayState.SONG.isRing){
+			if (PlayState.SONG.isRing)
+			{
 				switch (noteData)
 				{
 					case 0:
@@ -259,15 +274,15 @@ class Note extends FlxSprite
 
 			if (prevNote.isSustainNote)
 			{
-				if(PlayState.SONG.isRing)
+				if (PlayState.SONG.isRing)
 					switch (prevNote.noteData)
 					{
 						case 0:
 							prevNote.animation.play('purplehold');
 						case 1:
 							prevNote.animation.play('bluehold');
-							case 2:
-								prevNote.animation.play('bluehold');
+						case 2:
+							prevNote.animation.play('bluehold');
 						case 3:
 							prevNote.animation.play('greenhold');
 						case 4:
@@ -275,79 +290,95 @@ class Note extends FlxSprite
 					}
 				else
 					switch (prevNote.noteData)
-				{
-					case 0:
-						prevNote.animation.play('purplehold');
-					case 1:
-						prevNote.animation.play('bluehold');
-					case 2:
-						prevNote.animation.play('greenhold');
-					case 3:
-						prevNote.animation.play('redhold');
-				}
+					{
+						case 0:
+							prevNote.animation.play('purplehold');
+						case 1:
+							prevNote.animation.play('bluehold');
+						case 2:
+							prevNote.animation.play('greenhold');
+						case 3:
+							prevNote.animation.play('redhold');
+					}
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05 * PlayState.current.songSpeed;
-				if(isPixelNote) {
+				if (isPixelNote)
+				{
 					prevNote.scale.y *= 1.19;
 				}
 
-				prevNote.scaleDefault.set(prevNote.scale.x,prevNote.scale.y);
+				prevNote.scaleDefault.set(prevNote.scale.x, prevNote.scale.y);
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
 			}
 
-			if(isPixelNote) {
+			if (isPixelNote)
+			{
 				scale.y *= PlayState.daPixelZoom;
 				updateHitbox();
 			}
-
-		} else if(!isSustainNote) {
+		}
+		else if (!isSustainNote)
+		{
 			earlyHitMult = 1;
 		}
 		x += offsetX;
 
 		// determine parent note
-		if (isSustainNote && prevNote != null) {
+		if (isSustainNote && prevNote != null)
+		{
 			parentNote = prevNote;
 			while (parentNote.parentNote != null)
 				parentNote = parentNote.parentNote;
 			parentNote.childrenNotes.push(this);
-		} else if (!isSustainNote)
+		}
+		else if (!isSustainNote)
 			parentNote = null;
 
-		scaleDefault.set(scale.x,scale.y);
+		scaleDefault.set(scale.x, scale.y);
 	}
 
-	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '') {
-		if(prefix == null) prefix = '';
-		if(texture == null) texture = '';
-		if(suffix == null) suffix = '';
+	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '')
+	{
+		if (prefix == null)
+			prefix = '';
+		if (texture == null)
+			texture = '';
+		if (suffix == null)
+			suffix = '';
 
 		var skin:String = texture;
-		if(texture.length < 1) {
+		if (texture.length < 1)
+		{
 			skin = PlayState.SONG.arrowSkin;
-			if(skin == null || skin.length < 1) {
+			if (skin == null || skin.length < 1)
+			{
 				skin = 'NOTE_assets';
 			}
 		}
 
 		var animName:String = null;
-		if(animation.curAnim != null) {
+		if (animation.curAnim != null)
+		{
 			animName = animation.curAnim.name;
 		}
 
 		var arraySkin:Array<String> = skin.split('/');
-		arraySkin[arraySkin.length-1] = prefix + arraySkin[arraySkin.length-1] + suffix;
+		arraySkin[arraySkin.length - 1] = prefix + arraySkin[arraySkin.length - 1] + suffix;
 
 		var lastScaleY:Float = scale.y;
 		var blahblah:String = arraySkin.join('/');
-		if(isPixelNote) {
-			if(isSustainNote) {
+		if (isPixelNote)
+		{
+			if (isSustainNote)
+			{
 				loadGraphic(Paths.image('pixelUI/' + blahblah + 'ENDS'));
 				width = width / 4;
 				height = height / 2;
 				loadGraphic(Paths.image('pixelUI/' + blahblah + 'ENDS'), true, Math.floor(width), Math.floor(height));
-			} else {
+			}
+			else
+			{
 				loadGraphic(Paths.image('pixelUI/' + blahblah));
 				width = width / 4;
 				height = height / 5;
@@ -356,28 +387,35 @@ class Note extends FlxSprite
 			setGraphicSize(Std.int(width * ClientPrefs.noteSize * PlayState.daPixelZoom * 1.5));
 			loadPixelNoteAnims();
 			antialiasing = false;
-		} else {
-			if (prefix != 'MAJIN') frames = Paths.getSparrowAtlas(blahblah);
-			else if (prefix == 'MAJIN') frames = Paths.getSparrowAtlas('Majin_Notes');
+		}
+		else
+		{
+			if (prefix != 'MAJIN')
+				frames = Paths.getSparrowAtlas(blahblah);
+			else if (prefix == 'MAJIN')
+				frames = Paths.getSparrowAtlas('Majin_Notes');
 
 			loadNoteAnims();
 			antialiasing = ClientPrefs.globalAntialiasing;
 		}
-		if(isSustainNote) {
+		if (isSustainNote)
+		{
 			scale.y = lastScaleY;
 		}
 		updateHitbox();
 
-		if(animName != null)
+		if (animName != null)
 			animation.play(animName, true);
 
-		if(inEditor) {
+		if (inEditor)
+		{
 			setGraphicSize(ChartingState.GRID_SIZE, ChartingState.GRID_SIZE);
 			updateHitbox();
 		}
 	}
 
-	function loadNoteAnims() {
+	function loadNoteAnims()
+	{
 		animation.addByPrefix('greenScroll', 'green0');
 		animation.addByPrefix('redScroll', 'red0');
 		animation.addByPrefix('ringScroll', 'gold0');
@@ -398,13 +436,14 @@ class Note extends FlxSprite
 			animation.addByPrefix('bluehold', 'blue hold piece');
 		}
 
-
 		setGraphicSize(Std.int(width * ClientPrefs.noteSize));
 		updateHitbox();
 	}
 
-	function loadPixelNoteAnims() {
-		if(isSustainNote) {
+	function loadPixelNoteAnims()
+	{
+		if (isSustainNote)
+		{
 			animation.add('purpleholdend', [PURP_NOTE + 4]);
 			animation.add('greenholdend', [GREEN_NOTE + 4]);
 			animation.add('redholdend', [RED_NOTE + 4]);
@@ -414,7 +453,9 @@ class Note extends FlxSprite
 			animation.add('greenhold', [GREEN_NOTE]);
 			animation.add('redhold', [RED_NOTE]);
 			animation.add('bluehold', [BLUE_NOTE]);
-		} else {
+		}
+		else
+		{
 			animation.add('greenScroll', [GREEN_NOTE + 4]);
 			animation.add('redScroll', [RED_NOTE + 4]);
 			animation.add('blueScroll', [BLUE_NOTE + 4]);
@@ -424,31 +465,37 @@ class Note extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if(!inEditor){
-			alpha = CoolUtil.scale(desiredAlpha,0,1,0,baseAlpha);
+		if (!inEditor)
+		{
+			alpha = CoolUtil.scale(desiredAlpha, 0, 1, 0, baseAlpha);
 			if (tooLate || (parentNote != null && parentNote.tooLate))
 				alpha *= 0.3;
 		}
 
-		if(isSustainNote){
-			if(prevNote!=null && prevNote.isSustainNote){
-				zIndex=prevNote.zIndex;
-			}else if(prevNote!=null && !prevNote.isSustainNote){
-				zIndex=prevNote.zIndex-1;
+		if (isSustainNote)
+		{
+			if (prevNote != null && prevNote.isSustainNote)
+			{
+				zIndex = prevNote.zIndex;
 			}
-		}else{
-			zIndex=z;
+			else if (prevNote != null && !prevNote.isSustainNote)
+			{
+				zIndex = prevNote.zIndex - 1;
+			}
+		}
+		else
+		{
+			zIndex = z;
 		}
 
-		zIndex-=(mustPress==true?0:1);
+		zIndex -= (mustPress == true ? 0 : 1);
 
 		super.update(elapsed);
 
 		if (mustPress)
 		{
 			// ok river
-			if (strumTime > Conductor.songPosition - hitbox
-				&& strumTime < Conductor.songPosition + (hitbox * earlyHitMult))
+			if (strumTime > Conductor.songPosition - hitbox && strumTime < Conductor.songPosition + (hitbox * earlyHitMult))
 				canBeHit = true;
 			else
 				canBeHit = false;
@@ -463,11 +510,13 @@ class Note extends FlxSprite
 			if (strumTime <= Conductor.songPosition)
 				wasGoodHit = true;
 		}
-
 	}
 
-	override function draw(){
-		if(ClientPrefs.schmovin)if(isSustainNote)return;
+	override function draw()
+	{
+		if (ClientPrefs.schmovin)
+			if (isSustainNote)
+				return;
 
 		super.draw();
 	}

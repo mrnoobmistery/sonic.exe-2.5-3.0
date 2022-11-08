@@ -1,5 +1,4 @@
 // adapted from https://raw.githubusercontent.com/HaxeFlixel/flixel/master/flixel/group/FlxSpriteGroup.hx
-
 package;
 
 import flash.display.BitmapData;
@@ -704,21 +703,21 @@ class TypedSkewedSpriteGroup<T:FlxSkewedSprite> extends FlxSprite
 	override function set_x(Value:Float):Float
 	{
 		if (exists && x != Value)
-			transformChildren(xTransform, Value - x);// offset
+			transformChildren(xTransform, Value - x); // offset
 		return x = Value;
 	}
 
 	override function set_y(Value:Float):Float
 	{
 		if (exists && y != Value)
-			transformChildren(yTransform, Value - y);// offset
+			transformChildren(yTransform, Value - y); // offset
 		return y = Value;
 	}
 
 	override function set_angle(Value:Float):Float
 	{
 		if (exists && angle != Value)
-			transformChildren(angleTransform, Value - angle);// offset
+			transformChildren(angleTransform, Value - angle); // offset
 		return angle = Value;
 	}
 
@@ -1071,12 +1070,16 @@ class TypedSkewedSpriteGroup<T:FlxSkewedSprite> extends FlxSprite
 	/**
 	 * This functionality isn't supported in SpriteGroup
 	 */
-	override inline function resetHelpers():Void {}
+	override inline function resetHelpers():Void
+	{
+	}
 
 	/**
 	 * This functionality isn't supported in SpriteGroup
 	 */
-	override public inline function stamp(Brush:FlxSprite, X:Int = 0, Y:Int = 0):Void {}
+	override public inline function stamp(Brush:FlxSprite, X:Int = 0, Y:Int = 0):Void
+	{
+	}
 
 	override function set_frames(Frames:FlxFramesCollection):FlxFramesCollection
 	{
@@ -1086,5 +1089,7 @@ class TypedSkewedSpriteGroup<T:FlxSkewedSprite> extends FlxSprite
 	/**
 	 * This functionality isn't supported in SpriteGroup
 	 */
-	override inline function updateColorTransform():Void {}
+	override inline function updateColorTransform():Void
+	{
+	}
 }

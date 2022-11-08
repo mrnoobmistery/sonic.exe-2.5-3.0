@@ -10,26 +10,33 @@ using StringTools;
 class StrumNote extends FlxSprite
 {
 	private var colorSwap:ColorSwap;
+
 	public var resetAnim:Float = 0;
 	public var noteData:Int = 0;
+
 	public static var isMajinNote:Bool;
+
 	public var z:Float = 0; // for modchart system
 	public var zIndex:Float = 0;
 	public var scaleDefault:FlxPoint;
 
 	private var player:Int;
 
-	public function getZIndex(){
-    var animZOffset:Float = 0;
-    if(animation.curAnim!=null && animation.curAnim.name=='confirm')animZOffset+=1;
-    return z + animZOffset - player;
-  }
+	public function getZIndex()
+	{
+		var animZOffset:Float = 0;
+		if (animation.curAnim != null && animation.curAnim.name == 'confirm')
+			animZOffset += 1;
+		return z + animZOffset - player;
+	}
 
-  function updateZIndex(){
-    zIndex=getZIndex();
-  }
+	function updateZIndex()
+	{
+		zIndex = getZIndex();
+	}
 
-	public function new(x:Float, y:Float, leData:Int, player:Int, skin:String) {
+	public function new(x:Float, y:Float, leData:Int, player:Int, skin:String)
+	{
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteData = leData;
@@ -38,7 +45,7 @@ class StrumNote extends FlxSprite
 		this.noteData = leData;
 		super(x, y);
 
-		if(PlayState.isPixelStage)
+		if (PlayState.isPixelStage)
 		{
 			loadGraphic(Paths.image('pixelUI/' + skin));
 			width = width / 4;
@@ -74,8 +81,10 @@ class StrumNote extends FlxSprite
 		}
 		else
 		{
-			if (!isMajinNote) frames = Paths.getSparrowAtlas(skin);
-			else frames = Paths.getSparrowAtlas(skin, 'exe');
+			if (!isMajinNote)
+				frames = Paths.getSparrowAtlas(skin);
+			else
+				frames = Paths.getSparrowAtlas(skin, 'exe');
 			animation.addByPrefix('green', 'arrowUP');
 			animation.addByPrefix('blue', 'arrowDOWN');
 			animation.addByPrefix('purple', 'arrowLEFT');
@@ -84,7 +93,7 @@ class StrumNote extends FlxSprite
 			antialiasing = ClientPrefs.globalAntialiasing;
 			setGraphicSize(Std.int(width * ClientPrefs.noteSize));
 
-			if(PlayState.SONG.isRing)
+			if (PlayState.SONG.isRing)
 				switch (Math.abs(leData))
 				{
 					case 0:
@@ -108,7 +117,6 @@ class StrumNote extends FlxSprite
 						animation.addByPrefix('pressed', 'space press', 24, false);
 						animation.addByPrefix('confirm', 'space confirm', 24, false);
 				}
-
 			else
 				switch (Math.abs(leData))
 				{
@@ -133,20 +141,24 @@ class StrumNote extends FlxSprite
 
 		updateHitbox();
 		scrollFactor.set();
-		scaleDefault.set(scale.x,scale.y);
+		scaleDefault.set(scale.x, scale.y);
 	}
 
-	public function postAddedToGroup() {
+	public function postAddedToGroup()
+	{
 		playAnim('static');
-		if(player == 0)
+		if (player == 0)
 			x += 50;
 		ID = noteData;
 	}
 
-	override function update(elapsed:Float) {
-		if(resetAnim > 0) {
+	override function update(elapsed:Float)
+	{
+		if (resetAnim > 0)
+		{
 			resetAnim -= elapsed;
-			if(resetAnim <= 0) {
+			if (resetAnim <= 0)
+			{
 				playAnim('static');
 				resetAnim = 0;
 			}
@@ -160,26 +172,32 @@ class StrumNote extends FlxSprite
 		super.update(elapsed);
 	}
 
-	public function playAnim(anim:String, ?force:Bool = false) {
+	public function playAnim(anim:String, ?force:Bool = false)
+	{
 		animation.play(anim, force);
 		centerOffsets();
 		centerOrigin();
-		if(animation.curAnim == null || animation.curAnim.name == 'static') {
+		if (animation.curAnim == null || animation.curAnim.name == 'static')
+		{
 			colorSwap.hue = 0;
 			colorSwap.saturation = 0;
 			colorSwap.brightness = 0;
-		} else {
+		}
+		else
+		{
 			colorSwap.hue = ClientPrefs.arrowHSV[noteData % 4][0] / 360;
 			colorSwap.saturation = ClientPrefs.arrowHSV[noteData % 4][1] / 100;
 			colorSwap.brightness = ClientPrefs.arrowHSV[noteData % 4][2] / 100;
 
-			if(animation.curAnim.name == 'confirm' && !PlayState.isPixelStage) {
+			if (animation.curAnim.name == 'confirm' && !PlayState.isPixelStage)
+			{
 				updateConfirmOffset();
 			}
 		}
 	}
 
-	function updateConfirmOffset() { //TO DO: Find a calc to make the offset work fine on other angles
+	function updateConfirmOffset()
+	{ // TO DO: Find a calc to make the offset work fine on other angles
 		// offset.x -= 13*(ClientPrefs.noteSize/0.7);
 		// offset.y -= 13*(ClientPrefs.noteSize/0.7);
 	}

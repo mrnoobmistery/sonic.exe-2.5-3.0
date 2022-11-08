@@ -15,7 +15,6 @@ import editors.MasterEditorMenu;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
-
 #if windows
 import Discord.DiscordClient;
 #end
@@ -24,7 +23,8 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.4.2'; //This is also used for Discord RPC
+	public static var psychEngineVersion:String = '0.4.2'; // This is also used for Discord RPC
+
 	var curSelected:Int = 0;
 
 	var xval:Int = 585;
@@ -33,17 +33,11 @@ class MainMenuState extends MusicBeatState
 
 	var soundCooldown:Bool = true;
 
-	var optionShit:Array<String> = [
-		'story_mode',
-		'encore',
-		'freeplay',
-		'sound_test',
-		'options',
-		'extras'
-	];
+	var optionShit:Array<String> = ['story_mode', 'encore', 'freeplay', 'sound_test', 'options', 'extras'];
 
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
+
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
@@ -53,26 +47,26 @@ class MainMenuState extends MusicBeatState
 
 	var bgdesat:FlxSprite;
 	var camFollow:FlxObject;
-	public static var finishedFunnyMove:Bool = false;
-	var debugKeys:Array<FlxKey>;
 
+	public static var finishedFunnyMove:Bool = false;
+
+	var debugKeys:Array<FlxKey>;
 
 	override function create()
 	{
 		/*#if debug
-		optionShit.push('sound test');
-		#else
-		optionShit.push('sound test locked');
-		#end
-		if(!ClientPrefs.beatweek){
-			optionShit.push('sound_test locked');
-			optionShit.push('encore locked');
-		}
-		else{
-			optionShit.push('sound_test');
-			optionShit.push('encore');
+			optionShit.push('sound test');
+			#else
+			optionShit.push('sound test locked');
+			#end
+			if(!ClientPrefs.beatweek){
+				optionShit.push('sound_test locked');
+				optionShit.push('encore locked');
+			}
+			else{
+				optionShit.push('sound_test');
+				optionShit.push('encore');
 		}*/
-
 
 		#if windows
 		// Updating Discord Rich Presence
@@ -106,11 +100,8 @@ class MainMenuState extends MusicBeatState
 		add(bgdesat);
 		// bgdesat.scrollFactor.set();
 
-
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
-
-
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
@@ -126,14 +117,15 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-			var menuItem:FlxSprite = new FlxSprite(-500, (i * 100)  + offset);
+			var menuItem:FlxSprite = new FlxSprite(-500, (i * 100) + offset);
 			menuItem.scale.x = scale;
 			menuItem.scale.y = scale;
 			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.addByPrefix('lock', optionShit[i] + " locked", 24);
-		if (!ClientPrefs.beatweek && optionShit[i] == 'sound_test') {
-				//menuItem.color = FlxColor.fromHSL(menuItem.color.hue, menuItem.color.saturation, 0.2, 1);
+			if (!ClientPrefs.beatweek && optionShit[i] == 'sound_test')
+			{
+				// menuItem.color = FlxColor.fromHSL(menuItem.color.hue, menuItem.color.saturation, 0.2, 1);
 				menuItem.animation.play('lock');
 				menuItem.animation.addByPrefix('idle', optionShit[i] + " locked", 24);
 			}
@@ -142,36 +134,38 @@ class MainMenuState extends MusicBeatState
 				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 				menuItem.animation.play('idle');
 			}
-			
+
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			var scr:Float = (optionShit.length - 4) * 0.135;
-			if(optionShit.length < 6) scr = 0;
+			if (optionShit.length < 6)
+				scr = 0;
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
-			//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
+			// menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
 			menuItem.updateHitbox();
 
-			
-			
 			if (firstStart)
-				FlxTween.tween(menuItem,{x: xval},1 + (i * 0.25) ,{ease: FlxEase.expoInOut, onComplete: function(flxTween:FlxTween)
+				FlxTween.tween(menuItem, {x: xval}, 1 + (i * 0.25), {
+					ease: FlxEase.expoInOut,
+					onComplete: function(flxTween:FlxTween)
 					{
-						if(i == optionShit.length - 1)
+						if (i == optionShit.length - 1)
 						{
 							finishedFunnyMove = true;
 							changeItem();
 						}
-					}});
-			else{
+					}
+				});
+			else
+			{
 				menuItem.x = xval;
-				finishedFunnyMove=true;
+				finishedFunnyMove = true;
 			}
 
 			xval = xval + 70;
 		}
-
 
 		firstStart = false;
 
@@ -213,34 +207,32 @@ class MainMenuState extends MusicBeatState
 			});
 		}
 
-
-
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 		if (!selectedSomethin)
 		{
-				if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.W)
-				{
-					FlxG.sound.play(Paths.sound('scrollMenu'));
-					changeItem(-1);
-				}
+			if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.W)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeItem(-1);
+			}
 
-				if (FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.S)
-				{
-					FlxG.sound.play(Paths.sound('scrollMenu'));
-					changeItem(1);
-				}
+			if (FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.S)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeItem(1);
+			}
 
-				if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
-				{
-					selectedSomethin = true;
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					MusicBeatState.switchState(new TitleState());
-				}
+			if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
+			{
+				selectedSomethin = true;
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				MusicBeatState.switchState(new TitleState());
+			}
 
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
+			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
@@ -250,7 +242,7 @@ class MainMenuState extends MusicBeatState
 				{
 					soundCooldown = false;
 					FlxG.sound.play(Paths.sound('deniedMOMENT'));
-					camera.shake(0.03,0.03);
+					camera.shake(0.03, 0.03);
 					new FlxTimer().start(0.8, function(tmr:FlxTimer)
 					{
 						soundCooldown = true;
@@ -287,7 +279,7 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new FreeplayState());
 									case 'encore':
 										MusicBeatState.switchState(new EncoreState());
-									case 'sound_test':										
+									case 'sound_test':
 										MusicBeatState.switchState(new SoundTestMenu());
 									case 'options':
 										MusicBeatState.switchState(new OptionsState());
@@ -302,17 +294,17 @@ class MainMenuState extends MusicBeatState
 			if (FlxG.keys.justPressed.SIX)
 			{
 				MusicBeatState.switchState(new EncoreState());
-				//changeItem(1);
+				// changeItem(1);
 			}
 			if (FlxG.keys.justPressed.SEVEN)
 			{
 				MusicBeatState.switchState(new MasterEditorMenu());
-				//changeItem(1);
+				// changeItem(1);
 			}
 			if (FlxG.keys.justPressed.EIGHT)
 			{
 				MusicBeatState.switchState(new FreeplayState());
-				//changeItem(1);
+				// changeItem(1);
 			}
 		}
 
@@ -324,39 +316,37 @@ class MainMenuState extends MusicBeatState
 		if (finishedFunnyMove)
 		{
 			curSelected += huh;
-			
+
 			if (curSelected >= menuItems.length)
 				curSelected = 0;
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
-			
-			
 		}
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			var daChoice:String = optionShit[curSelected];
-			if(!ClientPrefs.beatweek && daChoice == 'sound_test'){
-					spr.animation.play('lock');
-				}
-			spr.animation.play('idle');
-			
-			/*
-			if (huh != 0)
+			if (!ClientPrefs.beatweek && daChoice == 'sound_test')
 			{
-				FlxTween.cancelTweensOf(spr);
+				spr.animation.play('lock');
 			}
-			FlxTween.tween(spr, {x: 100 + ((curSelected * -1 + spr.ID + 1) * 220) , y: 40 + ((curSelected * -1 + spr.ID + 1) * 140)}, 0.2);
-			*/
+			spr.animation.play('idle');
 
-			
-			
+			/*
+				if (huh != 0)
+				{
+					FlxTween.cancelTweensOf(spr);
+				}
+				FlxTween.tween(spr, {x: 100 + ((curSelected * -1 + spr.ID + 1) * 220) , y: 40 + ((curSelected * -1 + spr.ID + 1) * 140)}, 0.2);
+			 */
+
 			if (spr.ID == curSelected && finishedFunnyMove)
 			{
-				if(!ClientPrefs.beatweek && daChoice == 'sound_test'){
+				if (!ClientPrefs.beatweek && daChoice == 'sound_test')
+				{
 					spr.animation.play('lock');
 				}
 				else
-				spr.animation.play('selected');
+					spr.animation.play('selected');
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 

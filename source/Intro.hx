@@ -12,7 +12,7 @@ import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
-//import flixel.graphics.FlxGraphic;
+// import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
@@ -30,43 +30,46 @@ import openfl.Assets;
 
 using StringTools;
 
-
 class Intro extends MusicBeatState
 {
-    override public function create()
-    {
-      var div:FlxSprite;
-      div = new FlxSprite();
-      div.loadGraphic(Paths.image("cameostuff/divide"));
-      div.alpha = 0;
-      add(div);
-		  FlxG.mouse.visible = false;
-			FlxG.sound.volume = 10;
+	override public function create()
+	{
+		var div:FlxSprite;
+		div = new FlxSprite();
+		div.loadGraphic(Paths.image("cameostuff/divide"));
+		div.alpha = 0;
+		add(div);
+		FlxG.mouse.visible = false;
+		FlxG.sound.volume = 10;
 
-      FlxG.sound.muteKeys = [];
-  		FlxG.sound.volumeDownKeys = [];
-  		FlxG.sound.volumeUpKeys = [];
-      #if VIDEOS_ALLOWED
-        var video = new MP4Handler();
-        video.canSkip=false;
-        video.finishCallback = function()
-        {
-          FlxG.sound.muteKeys = TitleState.muteKeys;
-          FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-          FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;    
-          FlxTween.tween(div, {alpha: 1}, 3.4, {ease: FlxEase.quadInOut,
-            onComplete: function(twn:FlxTween)
-              {
-                FlxTween.tween(div, {alpha: 0}, 3.4, {ease: FlxEase.quadInOut, 
-                  onComplete: function(twn:FlxTween){
-                    MusicBeatState.switchState(new TitleState());
-                  }});
-              }
-            });
-        }
-        video.playVideo(Paths.video('HaxeFlixelIntro'));
-    #else
-    MusicBeatState.switchState(new TitleState());
-    #end
-    }
+		FlxG.sound.muteKeys = [];
+		FlxG.sound.volumeDownKeys = [];
+		FlxG.sound.volumeUpKeys = [];
+		#if VIDEOS_ALLOWED
+		var video = new MP4Handler();
+		video.canSkip = false;
+		video.finishCallback = function()
+		{
+			FlxG.sound.muteKeys = TitleState.muteKeys;
+			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
+			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
+			FlxTween.tween(div, {alpha: 1}, 3.4, {
+				ease: FlxEase.quadInOut,
+				onComplete: function(twn:FlxTween)
+				{
+					FlxTween.tween(div, {alpha: 0}, 3.4, {
+						ease: FlxEase.quadInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							MusicBeatState.switchState(new TitleState());
+						}
+					});
+				}
+			});
+		}
+		video.playVideo(Paths.video('HaxeFlixelIntro'));
+		#else
+		MusicBeatState.switchState(new TitleState());
+		#end
+	}
 }

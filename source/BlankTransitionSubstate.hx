@@ -14,66 +14,65 @@ import flixel.util.FlxColor;
 
 class BlankTransitionSubstate extends TransitionSubstate
 {
-  var _finalDelayTime:Float = 0.0;
+	var _finalDelayTime:Float = 0.0;
 
-  public static var defaultCamera:FlxCamera;
-  public static var nextCamera:FlxCamera;
+	public static var defaultCamera:FlxCamera;
+	public static var nextCamera:FlxCamera;
 
-  var curStatus:TransitionStatus;
+	var curStatus:TransitionStatus;
 
-  public function new(){
-    super();
-  }
+	public function new()
+	{
+		super();
+	}
 
-  public override function destroy():Void
-  {
-    super.destroy();
-    finishCallback = null;
-  }
+	public override function destroy():Void
+	{
+		super.destroy();
+		finishCallback = null;
+	}
 
-  function onFinish(f:FlxTimer):Void
-  {
-    if (finishCallback != null)
-    {
-      finishCallback();
-      finishCallback = null;
-    }
-  }
+	function onFinish(f:FlxTimer):Void
+	{
+		if (finishCallback != null)
+		{
+			finishCallback();
+			finishCallback = null;
+		}
+	}
 
-  function delayThenFinish():Void
-  {
-    new FlxTimer().start(_finalDelayTime, onFinish); // force one last render call before exiting
-  }
+	function delayThenFinish():Void
+	{
+		new FlxTimer().start(_finalDelayTime, onFinish); // force one last render call before exiting
+	}
 
-  public override function update(elapsed:Float){
+	public override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+	}
 
-    super.update(elapsed);
-  }
+	override public function start(status:TransitionStatus)
+	{
+		var cam = nextCamera != null ? nextCamera : (defaultCamera != null ? defaultCamera : FlxG.cameras.list[FlxG.cameras.list.length - 1]);
+		cameras = [cam];
 
+		nextCamera = null;
+		trace('transitioning $status');
+		curStatus = status;
+		var zoom:Float = FlxMath.bound(cam.zoom, 0.001);
+		var width:Int = Math.ceil(cam.width / zoom);
+		var height:Int = Math.ceil(cam.height / zoom);
 
-  override public function start(status: TransitionStatus){
-    var cam = nextCamera!=null?nextCamera:(defaultCamera!=null?defaultCamera:FlxG.cameras.list[FlxG.cameras.list.length - 1]);
-    cameras = [cam];
+		switch (status)
+		{
+			case IN:
 
-    nextCamera = null;
-    trace('transitioning $status');
-    curStatus=status;
-    var zoom:Float = FlxMath.bound(cam.zoom,0.001);
-    var width:Int = Math.ceil(cam.width/zoom);
-    var height:Int = Math.ceil(cam.height/zoom);
+			case OUT:
 
-    switch(status){
-      case IN:
+			default:
+				trace("bruh");
+		}
 
-      case OUT:
-
-
-      default:
-        trace("bruh");
-    }
-
-    delayThenFinish(); // this should be called whenever the transition is finished
-
-
-  }
+		delayThenFinish(); // this should be called whenever the transition is finished
+	}
 }

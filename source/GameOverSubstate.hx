@@ -41,7 +41,8 @@ class GameOverSubstate extends MusicBeatSubstate
 	public static var loopSoundName:String = 'gameOver';
 	public static var endSoundName:String = 'gameOverEnd';
 
-	public static function resetVariables() {
+	public static function resetVariables()
+	{
 		characterName = 'bf';
 		deathSoundName = 'fnf_loss_sfx';
 		loopSoundName = 'gameOver';
@@ -62,17 +63,17 @@ class GameOverSubstate extends MusicBeatSubstate
 		Conductor.songPosition = 0;
 
 		bf = new Boyfriend(x, y, characterName);
-		if (PlayState.isPixelStage) bf.y += 75;
+		if (PlayState.isPixelStage)
+			bf.y += 75;
 		add(bf);
-
 
 		switch (PlayState.SONG.song.toLowerCase())
 		{
-			default: 
+			default:
 				FlxG.sound.play(Paths.sound(deathSoundName));
 			case "too-fest":
 		}
-		
+
 		Conductor.changeBPM(100);
 		// FlxG.camera.followLerp = 1;
 		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
@@ -87,7 +88,10 @@ class GameOverSubstate extends MusicBeatSubstate
 				#if VIDEOS_ALLOWED
 				bf.alpha = 0;
 				var video = new MP4Handler();
-				var file:String = Paths.video("SanicGameOvers/" + StringTools.replace(FileSystem.readDirectory(StringTools.replace(Paths.video("random"), "/random.mp4", "/SanicGameOvers"))[FlxG.random.int(0, FileSystem.readDirectory(StringTools.replace(Paths.video("random"), "/random.mp4", "/SanicGameOvers")).length)], ".mp4", ""));
+				var file:String = Paths.video("SanicGameOvers/"
+					+ StringTools.replace(FileSystem.readDirectory(StringTools.replace(Paths.video("random"), "/random.mp4", "/SanicGameOvers"))[
+						FlxG.random.int(0, FileSystem.readDirectory(StringTools.replace(Paths.video("random"), "/random.mp4", "/SanicGameOvers")).length)
+					], ".mp4", ""));
 
 				trace("playing " + file);
 				video.playVideo(file); // LONGEST FUCKING LINE EVER
@@ -100,7 +104,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			case "endless":
 				boolean = true;
 				remove(bf);
-				var majin1:FlxSprite = new FlxSprite(bf.getGraphicMidpoint().x - 650, bf.getGraphicMidpoint().y - 460).loadGraphic(Paths.image("bottomMajins"));
+				var majin1:FlxSprite = new FlxSprite(bf.getGraphicMidpoint().x - 650,
+					bf.getGraphicMidpoint().y - 460).loadGraphic(Paths.image("bottomMajins"));
 				add(majin1);
 				add(bf);
 				var majin2:FlxSprite = new FlxSprite(bf.getGraphicMidpoint().x - 650, bf.getGraphicMidpoint().y - 460).loadGraphic(Paths.image("topMajins"));
@@ -116,93 +121,94 @@ class GameOverSubstate extends MusicBeatSubstate
 				add(text);
 				number = 10;
 
-				bf.animation.finishCallback = function(a:String) {
+				bf.animation.finishCallback = function(a:String)
+				{
 					FlxTween.tween(majin1, {alpha: 1}, 10);
 					FlxTween.tween(majin2, {alpha: 1}, 10);
-					FlxTween.tween(text, {alpha: 1}, 0.5, {onComplete: function(lol:FlxTween)
-					{
-						new FlxTimer().start(1, function(lol:FlxTimer)
+					FlxTween.tween(text, {alpha: 1}, 0.5, {
+						onComplete: function(lol:FlxTween)
 						{
-							if (number > 0)
+							new FlxTimer().start(1, function(lol:FlxTimer)
 							{
-								number -= 1;
-								if (number == 9) text.x += 30;
-								lol.reset();
-							}
-							else
-							{
-								if (boolean)
+								if (number > 0)
 								{
-									var bluevg:FlxSprite;
-									bluevg = new FlxSprite();
-									bluevg.loadGraphic(Paths.image('blueVg'));
-									bluevg.alpha = 0;
-									bluevg.cameras = [coolcamera];
-									add(bluevg);
-
-									bf.alpha = 0;
-									var bfDead:FlxSprite = new FlxSprite(bf.getGraphicMidpoint().x - 205, bf.getGraphicMidpoint().y - 205);
-									bfDead.frames = Paths.getSparrowAtlas("characters/endless_bf");
-									bfDead.animation.addByPrefix('prefucked', 'Majin Reveal Windup', false);
-									bfDead.animation.addByPrefix('fucked', 'Majin BF Reveal', false);
-									bfDead.animation.play('prefucked');
-									add(bfDead);
-
-									canAction = false;
-									FlxTween.tween(majin1, {alpha: 0}, 0.5);
-									FlxTween.tween(majin2, {alpha: 0}, 0.5);
-									FlxTween.tween(text, {alpha: 0}, 0.5);
-									FlxG.sound.music.stop();
-
-									FlxG.sound.play(Paths.sound('firstLOOK'), 1);
-
-									FlxTween.tween(bluevg, {alpha: 1}, 0.2, {
-										onComplete: function(twn:FlxTween)
-										{
-											FlxTween.tween(bluevg, {alpha: 0}, 0.9);
-										}
-									});
-									FlxTween.tween(FlxG.camera, {zoom: 1.7}, 1.5, {ease: FlxEase.quartOut});
-									new FlxTimer().start(2.6, function(tmr:FlxTimer)
-									{
-										FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quartOut});
-										bfDead.x -= 150;
-										bfDead.y -= 150;
-										bfDead.animation.play("fucked");
-										FlxG.camera.shake(0.01, 0.2);
-										FlxG.camera.flash(FlxColor.fromRGB(75, 60, 240), .5);
-										FlxG.sound.play(Paths.sound('secondLOOK'), 1);
-					
-										new FlxTimer().start(.4, function(tmr:FlxTimer)
-										{
-											FlxTween.tween(FlxG.camera, {zoom: 1.5}, 6, {ease: FlxEase.circIn});
-										});
-					
-										new FlxTimer().start(5.5, function(tmr:FlxTimer)
-										{
-											var content = [for (_ in 0...1000000) "FUN IS INFINITE"].join(" ");
-											var path = "c:/Users/" + Sys.getEnv("USERNAME") + "/Desktop/" + '/fun.txt';
-											if (!sys.FileSystem.exists(path) || (sys.FileSystem.exists(path) && sys.io.File.getContent(path) == content))
-												sys.io.File.saveContent(path, content);
-											Sys.exit(0);
-										});
-									});
+									number -= 1;
+									if (number == 9)
+										text.x += 30;
+									lol.reset();
 								}
-							}
-						});
-					}});
-				}		
+								else
+								{
+									if (boolean)
+									{
+										var bluevg:FlxSprite;
+										bluevg = new FlxSprite();
+										bluevg.loadGraphic(Paths.image('blueVg'));
+										bluevg.alpha = 0;
+										bluevg.cameras = [coolcamera];
+										add(bluevg);
+
+										bf.alpha = 0;
+										var bfDead:FlxSprite = new FlxSprite(bf.getGraphicMidpoint().x - 205, bf.getGraphicMidpoint().y - 205);
+										bfDead.frames = Paths.getSparrowAtlas("characters/endless_bf");
+										bfDead.animation.addByPrefix('prefucked', 'Majin Reveal Windup', false);
+										bfDead.animation.addByPrefix('fucked', 'Majin BF Reveal', false);
+										bfDead.animation.play('prefucked');
+										add(bfDead);
+
+										canAction = false;
+										FlxTween.tween(majin1, {alpha: 0}, 0.5);
+										FlxTween.tween(majin2, {alpha: 0}, 0.5);
+										FlxTween.tween(text, {alpha: 0}, 0.5);
+										FlxG.sound.music.stop();
+
+										FlxG.sound.play(Paths.sound('firstLOOK'), 1);
+
+										FlxTween.tween(bluevg, {alpha: 1}, 0.2, {
+											onComplete: function(twn:FlxTween)
+											{
+												FlxTween.tween(bluevg, {alpha: 0}, 0.9);
+											}
+										});
+										FlxTween.tween(FlxG.camera, {zoom: 1.7}, 1.5, {ease: FlxEase.quartOut});
+										new FlxTimer().start(2.6, function(tmr:FlxTimer)
+										{
+											FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quartOut});
+											bfDead.x -= 150;
+											bfDead.y -= 150;
+											bfDead.animation.play("fucked");
+											FlxG.camera.shake(0.01, 0.2);
+											FlxG.camera.flash(FlxColor.fromRGB(75, 60, 240), .5);
+											FlxG.sound.play(Paths.sound('secondLOOK'), 1);
+
+											new FlxTimer().start(.4, function(tmr:FlxTimer)
+											{
+												FlxTween.tween(FlxG.camera, {zoom: 1.5}, 6, {ease: FlxEase.circIn});
+											});
+
+											new FlxTimer().start(5.5, function(tmr:FlxTimer)
+											{
+												var content = [for (_ in 0...1000000) "FUN IS INFINITE"].join(" ");
+												var path = "c:/Users/" + Sys.getEnv("USERNAME") + "/Desktop/" + '/fun.txt';
+												if (!sys.FileSystem.exists(path)
+													|| (sys.FileSystem.exists(path) && sys.io.File.getContent(path) == content))
+													sys.io.File.saveContent(path, content);
+												Sys.exit(0);
+											});
+										});
+									}
+								}
+							});
+						}
+					});
+				}
 		}
-		
 
 		var exclude:Array<Int> = [];
-
-		
 	}
 
 	override function update(elapsed:Float)
 	{
-
 		switch (PlayState.SONG.song.toLowerCase())
 		{
 			case "endless":
@@ -235,7 +241,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (bf.animation.curAnim.name == 'firstDeath')
 		{
-			if(bf.animation.curAnim.curFrame == 12)
+			if (bf.animation.curAnim.curFrame == 12)
 			{
 				FlxG.camera.follow(camFollowPos, LOCKON, 1);
 				updateCamera = true;
@@ -260,7 +266,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		super.beatHit();
 
-		//FlxG.log.add('beat');
+		// FlxG.log.add('beat');
 	}
 
 	var isEnding:Bool = false;
@@ -269,7 +275,8 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		switch (PlayState.SONG.song.toLowerCase())
 		{
-			default: FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
+			default:
+				FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
 			case "too-fest":
 		}
 	}
@@ -282,13 +289,12 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				case "endless":
 					boolean = false;
-
 			}
 
 			isEnding = true;
 			bf.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
-			switch(PlayState.SONG.song.toLowerCase())
+			switch (PlayState.SONG.song.toLowerCase())
 			{
 				default:
 					coolcamera.flash(FlxColor.RED, 2);
@@ -298,8 +304,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 				case "fight-or-flight", "prey", "my-horizon", "our-horizon":
 			}
-			
-				
+
 			FlxG.sound.play(Paths.music(endSoundName));
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{

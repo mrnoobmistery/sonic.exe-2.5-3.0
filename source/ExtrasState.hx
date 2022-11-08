@@ -15,8 +15,6 @@ import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import lime.utils.Assets;
-
-
 #if windows
 import Discord.DiscordClient;
 #end
@@ -25,7 +23,6 @@ using StringTools;
 
 class ExtrasState extends MusicBeatState // REWRITE FREEPLAY!?!?!? HELL YEA!!!!!
 {
-
 	public static var talk:FlxText;
 
 	override function create()
@@ -33,19 +30,18 @@ class ExtrasState extends MusicBeatState // REWRITE FREEPLAY!?!?!? HELL YEA!!!!!
 		talk = new FlxText();
 		talk.text = "Hey so this isn't finished.\nI'm just here to prevent a softlock, sorry.";
 		talk.alignment = CENTER;
-		talk.scale.set(2.3,2.3);
+		talk.scale.set(2.3, 2.3);
 		talk.updateHitbox();
 		talk.screenCenter();
 		add(talk);
 		super.create();
 	}
-	
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		if(controls.ACCEPT)
+		if (controls.ACCEPT)
 			MusicBeatState.switchState(new MainMenuState());
 	}
 }
