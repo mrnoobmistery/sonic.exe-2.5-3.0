@@ -125,14 +125,6 @@ class TitleState extends MusicBeatState
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
 
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
-
-			// var music:FlxSound = new FlxSound();
-			// music.loadStream(Paths.music('freakyMenu'));
-			// FlxG.sound.list.add(music);
-			// music.play();
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
 			FlxG.sound.music.fadeIn(5, 0, 0.7);
@@ -182,14 +174,6 @@ class TitleState extends MusicBeatState
 		titleText.screenCenter();
 		// titleText.screenCenter(X);
 		add(titleText);
-
-		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
-		logo.screenCenter();
-		logo.antialiasing = ClientPrefs.globalAntialiasing;
-		// add(logo);
-
-		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
-		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
 
 		credGroup = new FlxGroup();
 		add(credGroup);
@@ -449,73 +433,6 @@ class TitleState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
-
-		/*	if(logoBl != null)
-				logoBl.animation.play('bump');
-
-			if(gfDance != null) {
-				danceLeft = !danceLeft;
-
-				if (danceLeft)
-					gfDance.animation.play('danceRight');
-				else
-					gfDance.animation.play('danceLeft');
-			}
-
-			if(!closedState) {
-				sickBeats++;
-				switch (sickBeats)
-				{
-					case 1:
-						createCoolText(['Psych Engine by'], 45);
-					// credTextShit.visible = true;
-					case 3:
-						addMoreText('Shadow Mario', 45);
-						addMoreText('RiverOaken', 45);
-					// credTextShit.text += '\npresent...';
-					// credTextShit.addText();
-					case 4:
-						deleteCoolText();
-					// credTextShit.visible = false;
-					// credTextShit.text = 'In association \nwith';
-					// credTextShit.screenCenter();
-					case 5:
-						createCoolText(['This is a mod to'], -60);
-					case 7:
-						addMoreText('This game right below lol', -60);
-						logoSpr.visible = true;
-					// credTextShit.text += '\nNewgrounds';
-					case 8:
-						deleteCoolText();
-						logoSpr.visible = false;
-					// credTextShit.visible = false;
-
-					// credTextShit.text = 'Shoutouts Tom Fulp';
-					// credTextShit.screenCenter();
-					case 9:
-						createCoolText([curWacky[0]]);
-					// credTextShit.visible = true;
-					case 11:
-						addMoreText(curWacky[1]);
-					// credTextShit.text += '\nlmao';
-					case 12:
-						deleteCoolText();
-					// credTextShit.visible = false;
-					// credTextShit.text = "Friday";
-					// credTextShit.screenCenter();
-					case 13:
-						addMoreText('Friday');
-					// credTextShit.visible = true;
-					case 14:
-						addMoreText('Night');
-					// credTextShit.text += '\nNight';
-					case 15:
-						addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
-
-					case 16:
-						skipIntro();
-				}
-		}*/
 	}
 
 	var skippedIntro:Bool = false;
