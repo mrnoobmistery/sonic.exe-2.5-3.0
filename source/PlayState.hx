@@ -9203,6 +9203,4 @@ class PlayState extends MusicBeatState
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%8Bobbd#Mooooooooh00000000000qkccccccCbbbbba&
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%&Bbddd&*oooooooZ0000000000mazccccccZ#kbdaB@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%k@o#bba%*ooooooO000000000mWXccccccccZM8adbk
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%W&@%*hbbda&ooooooO00000000wazccccccccYddkoW*b**/
-
-// SECRET NORMAL INVASION!!!!!!
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%W&@%*hbbda&ooooooO00000000wazccccccccYddkoW*b**/ // SECRET NORMAL INVASION!!!!!!
